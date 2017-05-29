@@ -51,6 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Genre.cs" />
     <Compile Include="GetListings.cs" />
     <Compile Include="MovieSearchResult.cs" />
     <Compile Include="Program.cs" />
@@ -59,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="genre.Json" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

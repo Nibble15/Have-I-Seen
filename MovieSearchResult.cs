@@ -8,7 +8,8 @@ namespace Have_I_Seen {
         [JsonProperty(PropertyName = "results")]
         public List<MovieSearchResult> Results { get; set; }
         public int total_results { get; set; }
-        public int total_pages { get; set; }
+        [JsonProperty(PropertyName = "total_pages")]
+        public int Pages { get; set; }
     }
 
     public class MovieSearchResult {
@@ -17,7 +18,8 @@ namespace Have_I_Seen {
         [JsonProperty(PropertyName = "overview")]
         public string Overview { get; set; }
         public string release_date { get; set; }
-        public int?[] genre_ids { get; set; }
+        [JsonProperty(PropertyName = "genre_ids")]
+        public int?[] GenreId { get; set; }
         public int id { get; set; }
         public string original_title { get; set; }
         public string original_language { get; set; }
