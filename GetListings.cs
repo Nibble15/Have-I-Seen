@@ -17,7 +17,7 @@ namespace Have_I_Seen {
         public int _genre { get; private set; }
         
 
-        //NOTE TO SELF: returns null if movie doesn't exist
+        //NOTE TO SELF: return null if movie doesn't exist
         private byte[] SearchByMovieOrGenre(string typeOfSearch, string query) {
             byte[] searchResults;
             var webClient = new WebClient();
@@ -35,7 +35,7 @@ namespace Have_I_Seen {
             return searchResults = null;
         }
         
-        //NOTE TO SELF: returns -1 if no match found
+        //NOTE TO SELF: return -1 if no match found
         public int GetGenreId(string genreType) {
             var genres = GetListings.DeserializeGenres();
             foreach (var genre in genres) {

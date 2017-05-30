@@ -1,8 +1,5 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net;
 
 namespace Have_I_Seen {
     class RunApp {
@@ -14,7 +11,6 @@ namespace Have_I_Seen {
             Console.WriteLine("Open Menu - type a command to begin searching:");
             Console.WriteLine("movie: to get a list of relevent movies");
             Console.WriteLine("genre: to get a list of movies in that genre: ");
-            
             while (true) {
                 string searchType = Console.ReadLine().ToLower().Trim();
                 string query = string.Empty;
@@ -26,8 +22,7 @@ namespace Have_I_Seen {
                     }
                     Console.Write("Please type the genre you wish to view: ");
                     query = Console.ReadLine().ToLower().Trim();
-                    int genreId = listings.GetGenreId(query);
-                    query = genreId.ToString();
+                    query = listings.GetGenreId(query).ToString();
                     movies = listings.GetMovies(searchType, query);
                     OutputResults(movies);
                     continue;
@@ -60,7 +55,7 @@ Overview:
                 //    }
                 //}
                 Console.WriteLine();
-                Console.WriteLine();
+                Console.WriteLine("---------------------------------------------------------------------------------------------------");
             }
         }
     }
