@@ -14,6 +14,10 @@ namespace Have_I_Seen {
             while (true) {
                 string searchType = Console.ReadLine().ToLower().Trim();
                 string query = string.Empty;
+                //TODO: get query to exit the loop
+                if (searchType == "quit" || query == "quit") {
+                    break;
+                }
                 List<MovieSearchResult> movies;
                 if (searchType == "genre") {
                     var genres = GetListings.DeserializeGenres();
@@ -25,18 +29,13 @@ namespace Have_I_Seen {
                     query = listings.GetGenreId(query).ToString();
                     movies = listings.GetMovies(searchType, query);
                     OutputResults(movies);
-                    continue;
                 }
                 if(searchType == "movie") {
                     query = Console.ReadLine().ToLower().Trim();
                     movies = listings.GetMovies(searchType, query);
                     OutputResults(movies);
-                    continue;
                 }
                 
-                if (searchType == "quit" || query == "quit") {
-                    break;
-                }
             }
         }
         private void OutputResults(List<MovieSearchResult> movies) {

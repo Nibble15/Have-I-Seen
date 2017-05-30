@@ -13,29 +13,36 @@ namespace Have_I_Seen {
         private string _searchMovies = "search/movie";
         private string _apiKey = "7cc33ddda390c1e661b0c6e87e0e5cd0";
         private string _language = "language=en-US";
-        public int _page { get; set; } = 1;
+        public int _page { get; private set; } = 1;
         public int _genre { get; private set; }
+        private List<MovieSearchResult> _results = new List<MovieSearchResult>();
+        private int _pageCount = new MovieSearch().Pages;
         
 
-        //NOTE TO SELF: return null if movie doesn't exist
+        public void PageNextOrBack(string choice) {
+            if (choice == "next" && _page < _pageCount) {
+                _page++;
+            }
+                if (choice == "back" && _page > 1 ) {
+                _page--;
+            }
+        }
+
         private byte[] SearchByMovieOrGenre(string typeOfSearch, string query) {
-            byte[] searchResults;
+            byte[] searchResults = null;
             var webClient = new WebClient();
-            if (typeOfSearch.ToLower().Trim() == "movie") {
+            if (typeOfSearch == "movie") {
                 searchResults = webClient.DownloadData(string.Format($"{_tmdbBaseUrl}{_searchMovies}" +
                                                                      $"?api_key={_apiKey}&{_language}&query={query}&page={_page}"));
-                return searchResults;
             }
-            if (typeOfSearch.ToLower().Trim() == "genre") {
+            if (typeOfSearch == "genre") {
                 query = _genre.ToString();
                 searchResults = webClient.DownloadData(string.Format($"{_tmdbBaseUrl}genre/{query}/movies" +
                                                                  $"?api_key={_apiKey}&{_language}&include_adult=false&sort_by=created_at.asc"));
-                return searchResults;
             }
-            return searchResults = null;
+            return searchResults;
         }
         
-        //NOTE TO SELF: return -1 if no match found
         public int GetGenreId(string genreType) {
             var genres = GetListings.DeserializeGenres();
             foreach (var genre in genres) {
@@ -48,7 +55,7 @@ namespace Have_I_Seen {
         }
         
         public List<MovieSearchResult> GetMovies(string typeOfSearch, string query) {
-            var results = new List<MovieSearchResult>();
+            var results = _results;
             byte[] searchResults = SearchByMovieOrGenre(typeOfSearch, query);
             var serializer = new JsonSerializer();
             using (var stream = new MemoryStream(searchResults))
