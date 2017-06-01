@@ -14,13 +14,15 @@ namespace Have_I_Seen {
             while (true) {
                 string searchType = Console.ReadLine().ToLower().Trim();
                 string query = string.Empty;
-                //TODO: get query to exit the loop
+                
+                //TODO: get query to exit the loop REMEMBER: query is currently empty..
                 if (searchType == "quit" || query == "quit") {
                     break;
                 }
                 List<MovieSearchResult> movies;
                 if (searchType == "genre") {
                     var genres = GetListings.DeserializeGenres();
+                    Console.WriteLine("Here are your genre choices: ");
                     foreach (var genre in genres) {
                         Console.WriteLine(genre.GenreType);
                     }
@@ -31,15 +33,30 @@ namespace Have_I_Seen {
                     OutputResults(movies);
                 }
                 if(searchType == "movie") {
+                    Console.Write("What is the name of the movie you're looking for: ");
                     query = Console.ReadLine().ToLower().Trim();
                     movies = listings.GetMovies(searchType, query);
                     OutputResults(movies);
                 }
-                
+                Console.Write("Type search for a new search, next to go to the next page or back to go back a page: ");
+                string searchNextOrBack = Console.ReadLine();
+                if (searchNextOrBack.ToLower() == "next") {
+                    Console.WriteLine("page: " + listings._page);
+                    
+                    listings.PageNextOrBack(searchNextOrBack);
+                    movies = listings.GetMovies(searchType, query);
+                    OutputResults(movies);
+                    Console.WriteLine("page: " + listings._page);
+                }
+                else if(searchNextOrBack.ToLower() == "search") {
+                    continue;
+                }
+
             }
         }
         private void OutputResults(List<MovieSearchResult> movies) {
             Console.WriteLine(string.Format($"There are: {movies.Count} movies that match your search \r\n"));
+            Console.WriteLine("# of pages: " + listings._pageCount);
             foreach (var movie in movies) {
                 Console.WriteLine(string.Format(@"Title - {0}
 

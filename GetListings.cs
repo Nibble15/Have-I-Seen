@@ -16,16 +16,29 @@ namespace Have_I_Seen {
         public int _page { get; private set; } = 1;
         public int _genre { get; private set; }
         private List<MovieSearchResult> _results = new List<MovieSearchResult>();
-        private int _pageCount = new MovieSearch().Pages;
+        public int _pageCount { get; set; }
         
 
         public void PageNextOrBack(string choice) {
             if (choice == "next" && _page < _pageCount) {
                 _page++;
             }
-                if (choice == "back" && _page > 1 ) {
+            if (choice == "back" && _page > 1) {
                 _page--;
             }
+        }
+
+        public List<MovieSearchResult> GetMovies(string typeOfSearch, string query) {
+            byte[] searchResults = SearchByMovieOrGenre(typeOfSearch, query);
+            var serializer = new JsonSerializer();
+            using (var stream = new MemoryStream(searchResults))
+            using (var reader = new StreamReader(stream))
+            using (var jsonReader = new JsonTextReader(reader)) {
+                var movieSearch = serializer.Deserialize<MovieSearch>(jsonReader);
+                _results = movieSearch.Results;
+                _pageCount = movieSearch.Pages;
+            }
+            return _results;
         }
 
         private byte[] SearchByMovieOrGenre(string typeOfSearch, string query) {
@@ -44,7 +57,7 @@ namespace Have_I_Seen {
         }
         
         public int GetGenreId(string genreType) {
-            var genres = GetListings.DeserializeGenres();
+            var genres = DeserializeGenres();
             foreach (var genre in genres) {
                 if(genre.GenreType.ToLower().Trim() == genreType) {
                     _genre = genre.Id;
@@ -52,18 +65,6 @@ namespace Have_I_Seen {
                 }
             }
             return -1;
-        }
-        
-        public List<MovieSearchResult> GetMovies(string typeOfSearch, string query) {
-            var results = _results;
-            byte[] searchResults = SearchByMovieOrGenre(typeOfSearch, query);
-            var serializer = new JsonSerializer();
-            using (var stream = new MemoryStream(searchResults))
-            using (var reader = new StreamReader(stream))
-            using (var jsonReader = new JsonTextReader(reader)) {
-                results = serializer.Deserialize<MovieSearch>(jsonReader).Results;
-            }
-            return results;
         }
 
         // used to deserialize genre.Json
