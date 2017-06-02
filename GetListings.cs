@@ -28,6 +28,10 @@ namespace Have_I_Seen {
             }
         }
 
+        public void ResetPageNumber() {
+            _page = 1;
+        }
+
         public List<MovieSearchResult> GetMovies(string typeOfSearch, string query) {
             byte[] searchResults = SearchByMovieOrGenre(typeOfSearch, query);
             var serializer = new JsonSerializer();
@@ -53,7 +57,7 @@ namespace Have_I_Seen {
             if (typeOfSearch == "genre") {
                 query = _genre.ToString();
                 searchResults = webClient.DownloadData(string.Format($"{_tmdbBaseUrl}genre/{query}/movies" +
-                                                                 $"?api_key={_apiKey}&{_language}&include_adult=false&sort_by=created_at.asc"));
+                                                                 $"?api_key={_apiKey}&{_language}&page={_page}&include_adult=false&sort_by=created_at.asc"));
             }
             return searchResults;
         }
@@ -91,5 +95,8 @@ namespace Have_I_Seen {
             }
         }
 
+        public void ShowPage() {
+            Console.WriteLine("Page: " + _page);
+        }
     }
 }
