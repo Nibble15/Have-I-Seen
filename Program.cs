@@ -7,10 +7,9 @@ using System.Net;
 namespace Have_I_Seen {
     class Program {
         static void Main(string[] args) {
-
             RunApp runApp = new RunApp();
             runApp.UserInterface();
-            
+
             //GetListings listings = new GetListings();
             //string currDirectory = Directory.GetCurrentDirectory();
             //DirectoryInfo directory = new DirectoryInfo(currDirectory);
@@ -26,7 +25,6 @@ namespace Have_I_Seen {
             //    Console.WriteLine("Genre: " + genre.GenreType + "Genre Id: " + genre.Id);
             //}
         }
-
         //public static List<Genre> GetGenres() {
         //    var results = new List<Genre>();
         //    var webClient = new WebClient();

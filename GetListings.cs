@@ -16,7 +16,7 @@ namespace Have_I_Seen {
         public int _page { get; private set; } = 1;
         public int _genre { get; private set; }
         private List<MovieSearchResult> _results = new List<MovieSearchResult>();
-        public int _pageCount { get; set; }
+        public int _pageCount { get; private set; }
         
 
         public void PageNextOrBack(string choice) {
@@ -34,6 +34,8 @@ namespace Have_I_Seen {
             using (var stream = new MemoryStream(searchResults))
             using (var reader = new StreamReader(stream))
             using (var jsonReader = new JsonTextReader(reader)) {
+                //_results = serializer.Deserialize<MovieSearch>(jsonReader).Results;
+                //_pageCount = serializer.Deserialize<MovieSearch>(jsonReader).Pages;
                 var movieSearch = serializer.Deserialize<MovieSearch>(jsonReader);
                 _results = movieSearch.Results;
                 _pageCount = movieSearch.Pages;
@@ -59,7 +61,7 @@ namespace Have_I_Seen {
         public int GetGenreId(string genreType) {
             var genres = DeserializeGenres();
             foreach (var genre in genres) {
-                if(genre.GenreType.ToLower().Trim() == genreType) {
+                if(genre.GenreType.ToLower().Trim() == genreType.ToLower().Trim()) {
                     _genre = genre.Id;
                     return _genre;
                 }
@@ -68,7 +70,7 @@ namespace Have_I_Seen {
         }
 
         // used to deserialize genre.Json
-        public static List<Genre> DeserializeGenres() {
+        private List<Genre> DeserializeGenres() {
             GetListings listings = new GetListings();
             string currDirectory = Directory.GetCurrentDirectory();
             DirectoryInfo directory = new DirectoryInfo(currDirectory);
@@ -81,5 +83,13 @@ namespace Have_I_Seen {
             }
             return genres;
         }
+
+        public void PrintGenres() {
+            var genreList = DeserializeGenres();
+            foreach (var genre in genreList) {
+                Console.WriteLine(genre.GenreType);
+            }
+        }
+
     }
 }
