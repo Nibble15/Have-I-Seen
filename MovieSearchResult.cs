@@ -7,7 +7,8 @@ namespace Have_I_Seen {
         public int page { get; set; }
         [JsonProperty(PropertyName = "results")]
         public List<MovieSearchResult> Results { get; set; }
-        public int total_results { get; set; }
+        [JsonProperty(PropertyName = "total_results")]
+        public int TotalResults { get; set; }
         [JsonProperty(PropertyName = "total_pages")]
         public int Pages { get; set; }
     }

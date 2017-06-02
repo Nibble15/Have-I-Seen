@@ -9,11 +9,7 @@ namespace Have_I_Seen {
         public void UserInterface() {
             
             while (true) {
-                Console.WriteLine(" ------------- Menu ------------- ");
-                Console.WriteLine("Type one of the following commands to begin searching:");
-                Console.WriteLine("'movie': to search by movie title");
-                Console.WriteLine("'genre': to search by genre: ");
-                Console.WriteLine("'quit': to exit");
+                MainMenu();
                 string searchType = Console.ReadLine().ToLower().Trim();
                 string query = string.Empty;
                 
@@ -25,14 +21,12 @@ namespace Have_I_Seen {
                     listings.PrintGenres();
                     Console.Write("Please type the genre you wish to view: ");
                     query = listings.GetGenreId(Console.ReadLine()).ToString();
-                    OutputResults(listings.GetMovies(searchType, query));
-                    listings.ShowPage();
+                    OutputResults(searchType, query);
                 }
                 if(searchType == "movie") {
                     Console.Write("What is the name of the movie you're looking for: ");
                     query = Console.ReadLine().ToLower().Trim();
-                    OutputResults(listings.GetMovies(searchType, query));
-                    listings.ShowPage();
+                    OutputResults(searchType, query);
                 }
                 
                 //Pagination or new Search
@@ -45,35 +39,44 @@ namespace Have_I_Seen {
                     }
                     else if (continueOrNewSearch == "next" || continueOrNewSearch == "back") {
                         listings.PageNextOrBack(continueOrNewSearch);
-                        OutputResults(listings.GetMovies(searchType, query));
-                        listings.ShowPage();
+                        OutputResults(searchType, query);
                     }
                 }
-
             }
         }
         
+        private void MainMenu() {
+            Console.WriteLine(" ------------- Menu ------------- ");
+            Console.WriteLine("Type one of the following commands to begin searching:");
+            Console.WriteLine("'movie': to search by movie title");
+            Console.WriteLine("'genre': to search by genre: ");
+            Console.WriteLine("'quit': to exit");
+        }
 
-        private void OutputResults(List<MovieSearchResult> movies) {
-            Console.WriteLine(string.Format($"There are: {movies.Count} movies that match your search \r\n"));
-            Console.WriteLine("# of pages: " + listings._pageCount);
+        private void OutputResults(string searchType, string query) {
+            var movies = listings.GetMovies(searchType, query);
             foreach (var movie in movies) {
+                Console.WriteLine();
                 Console.WriteLine(string.Format(@"Title - {0}
-
 Rating: {1} 
 
 Overview: 
 {2}", movie.Title, movie.Rating, movie.Overview));
-                
-                //if (movie.GenreId != null) {
-                //    foreach (var id in movie.GenreId) {
-                //        Console.WriteLine(id.Value);
-                //    }
-                //}
-                
                 Console.WriteLine();
                 Console.WriteLine("---------------------------------------------------------------------------------------------------");
             }
+            Console.WriteLine();
+            Console.WriteLine(string.Format($"{movies.Count} movies out of a total {listings.TotalResults}."));
+            listings.ShowPage();
+            Console.WriteLine(string.Format("Page{0} total: {1}\r\n", (listings._pageCount > 1) ? "s" : null, listings._pageCount));
+            Console.WriteLine("----------------------------------------------------------------\r\n\r\n\r\n");
         }
     }
 }
+
+
+//if (movie.GenreId != null) {
+//    foreach (var id in movie.GenreId) {
+//        Console.WriteLine(id.Value);
+//    }
+//}

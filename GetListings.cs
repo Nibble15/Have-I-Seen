@@ -17,6 +17,7 @@ namespace Have_I_Seen {
         public int _genre { get; private set; }
         private List<MovieSearchResult> _results = new List<MovieSearchResult>();
         public int _pageCount { get; private set; }
+        public int TotalResults { get; private set; }
         
 
         public void PageNextOrBack(string choice) {
@@ -43,6 +44,7 @@ namespace Have_I_Seen {
                 var movieSearch = serializer.Deserialize<MovieSearch>(jsonReader);
                 _results = movieSearch.Results;
                 _pageCount = movieSearch.Pages;
+                TotalResults = movieSearch.TotalResults;
             }
             return _results;
         }
