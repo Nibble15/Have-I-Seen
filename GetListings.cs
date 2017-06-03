@@ -9,10 +9,10 @@ namespace Have_I_Seen {
         // Genre ID search path = https://api.themoviedb.org/3/genre/12/movies?api_key=7cc33ddda390c1e661b0c6e87e0e5cd0&language=en-US&include_adult=false&sort_by=created_at.asc
         //Movie search path = https://api.themoviedb.org/3/search/movie?api_key=7cc33ddda390c1e661b0c6e87e0e5cd0&language=en-US&query=
 
-        private string _tmdbBaseUrl = "https://api.themoviedb.org/3/";
-        private string _searchMovies = "search/movie";
-        private string _apiKey = "7cc33ddda390c1e661b0c6e87e0e5cd0";
-        private string _language = "language=en-US";
+        private const string _tmdbBaseUrl = "https://api.themoviedb.org/3/";
+        private const string _searchMovies = "search/movie";
+        private const string _apiKey = "7cc33ddda390c1e661b0c6e87e0e5cd0";
+        private const string _language = "language=en-US";
         public int _page { get; private set; } = 1;
         public int _genre { get; private set; }
         private List<MovieSearchResult> _results = new List<MovieSearchResult>();
