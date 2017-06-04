@@ -68,7 +68,7 @@ Overview:
             Console.WriteLine();
             Console.WriteLine(string.Format($"{movies.Count} movies out of a total {listings.TotalResults}."));
             listings.ShowPage();
-            Console.WriteLine(string.Format("Page{0} total: {1}\r\n", (listings._pageCount > 1) ? "s" : null, listings._pageCount));
+            Console.WriteLine(string.Format("Page{0} total: {1}\r\n", (listings.PageCount > 1) ? "s" : null, listings.PageCount));
             Console.WriteLine("----------------------------------------------------------------\r\n\r\n\r\n");
         }
     }

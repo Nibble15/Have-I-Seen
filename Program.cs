@@ -22,7 +22,7 @@ namespace Have_I_Seen {
             //print genre.json file to console
             //var genres = GetListings.DeserializeGenres(fileName);
             //foreach (var genre in genres) {
-            //    Console.WriteLine("Genre: " + genre.GenreType + "Genre Id: " + genre.Id);
+            //    Console.WriteLine("Genre: " + genre.GenreTyp5e + "Genre Id: " + genre.Id);
             //}
         }
         //public static List<Genre> GetGenres() {

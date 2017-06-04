@@ -13,15 +13,15 @@ namespace Have_I_Seen {
         private const string _searchMovies = "search/movie";
         private const string _apiKey = "7cc33ddda390c1e661b0c6e87e0e5cd0";
         private const string _language = "language=en-US";
-        public int _page { get; private set; } = 1;
-        public int _genre { get; private set; }
+        private int _page = 1;
+        public int Genre { get; private set; }
         private List<MovieSearchResult> _results = new List<MovieSearchResult>();
-        public int _pageCount { get; private set; }
+        public int PageCount { get; private set; }
         public int TotalResults { get; private set; }
         
 
         public void PageNextOrBack(string choice) {
-            if (choice == "next" && _page < _pageCount) {
+            if (choice == "next" && _page < PageCount) {
                 _page++;
             }
             if (choice == "back" && _page > 1) {
@@ -39,11 +39,11 @@ namespace Have_I_Seen {
             using (var stream = new MemoryStream(searchResults))
             using (var reader = new StreamReader(stream))
             using (var jsonReader = new JsonTextReader(reader)) {
-                //_results = serializer.Deserialize<MovieSearch>(jsonReader).Results;
-                //_pageCount = serializer.Deserialize<MovieSearch>(jsonReader).Pages;
+                //_results = serializer.Deserialize<MovieSearch>(jsonReader).Results; //------this works
+                //PageCount = serializer.Deserialize<MovieSearch>(jsonReader).Pages; // ---------this doesn't work
                 var movieSearch = serializer.Deserialize<MovieSearch>(jsonReader);
                 _results = movieSearch.Results;
-                _pageCount = movieSearch.Pages;
+                PageCount = movieSearch.Pages;
                 TotalResults = movieSearch.TotalResults;
             }
             return _results;
@@ -57,7 +57,7 @@ namespace Have_I_Seen {
                                                                      $"?api_key={_apiKey}&{_language}&query={query}&page={_page}"));
             }
             if (typeOfSearch == "genre") {
-                query = _genre.ToString();
+                query = Genre.ToString();
                 searchResults = webClient.DownloadData(string.Format($"{_tmdbBaseUrl}genre/{query}/movies" +
                                                                  $"?api_key={_apiKey}&{_language}&page={_page}&include_adult=false&sort_by=created_at.asc"));
             }
@@ -68,8 +68,8 @@ namespace Have_I_Seen {
             var genres = DeserializeGenres();
             foreach (var genre in genres) {
                 if(genre.GenreType.ToLower().Trim() == genreType.ToLower().Trim()) {
-                    _genre = genre.Id;
-                    return _genre;
+                    Genre = genre.Id;
+                    return Genre;
                 }
             }
             return -1;
